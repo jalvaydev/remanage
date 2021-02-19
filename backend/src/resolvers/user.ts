@@ -13,7 +13,7 @@ import argon2 from "argon2";
 import { EntityManager } from "@mikro-orm/postgresql";
 import { COOKIE_NAME, FORGET_PASSWORD_PREFIX } from "../constants";
 import { sendEmail } from "../utils/sendEmail";
-import { UsernamePasswordInput } from "./UsernamePasswordInput";
+import { RegistrationInput } from "./RegistrationInput";
 import { validateRegister } from "../utils/validateRegister";
 import { v4 } from "uuid";
 import { validatePassword } from "../utils/validatePassword";
@@ -45,6 +45,12 @@ export class UserResolver {
     }
 
     const user = await em.findOne(User, { id: req.session.userId });
+    return user;
+  }
+
+  @Query(() => User, { nullable: true })
+  async findUser(@Arg("id") id: number, @Ctx() { em }: any) {
+    const user = await em.findOne(User, { id });
     return user;
   }
 
@@ -113,11 +119,12 @@ export class UserResolver {
       `<a href="http://localhost:3000/change-password/${token}">reset password</a>`
     );
     return true;
+    RegistrationInput;
   }
 
   @Mutation(() => UserResponse)
   async register(
-    @Arg("options") options: UsernamePasswordInput,
+    @Arg("options") options: RegistrationInput,
     @Ctx() { em, req }: MyContext
   ): Promise<UserResponse> {
     const errors = validateRegister(options);
@@ -132,6 +139,7 @@ export class UserResolver {
           username: options.username,
           password: hashedPassword,
           email: options.email,
+          account_type: options.accountType,
           created_at: new Date(),
           updated_at: new Date(),
         })
@@ -151,6 +159,8 @@ export class UserResolver {
     }
 
     req.session.userId = user.id;
+
+    console.log(user);
 
     return { user };
   }

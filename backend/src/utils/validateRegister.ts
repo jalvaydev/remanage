@@ -1,7 +1,7 @@
-import { UsernamePasswordInput } from "src/resolvers/UsernamePasswordInput";
+import { RegistrationInput } from "src/resolvers/RegistrationInput";
 import { validateEmail } from "./validateEmail";
 
-export const validateRegister = (options: UsernamePasswordInput) => {
+export const validateRegister = (options: RegistrationInput) => {
   if (options.username.length <= 2) {
     return [
       {
@@ -35,5 +35,18 @@ export const validateRegister = (options: UsernamePasswordInput) => {
       },
     ];
   }
+  if (
+    !(
+      options.accountType === "tenant" ||
+      options.accountType === "landlord" ||
+      options.accountType === "admin"
+    )
+  )
+    return [
+      {
+        field: "account type",
+        message: "invalid account type",
+      },
+    ];
   return null;
 };
