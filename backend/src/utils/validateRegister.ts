@@ -38,7 +38,7 @@ export const validateRegister = (options: RegistrationInput) => {
   if (
     !(
       options.accountType === "tenant" ||
-      options.accountType === "landlord" ||
+      options.accountType === "manager" ||
       options.accountType === "admin"
     )
   )
