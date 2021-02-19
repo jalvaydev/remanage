@@ -4,6 +4,7 @@ import { useState } from "react";
 const NavBar = () => {
   const [profileDrop, setProfileDrop] = useState(false);
   const [mobileMenu, setMobileMenu] = useState(false);
+
   return (
     <nav className="bg-gray-800">
       <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">

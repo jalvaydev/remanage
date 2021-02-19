@@ -5,7 +5,7 @@ const Layout = ({ children, home }) => {
   return (
     <div>
       <Head>
-        <title>Welcome to Chilis</title>
+        <title>Remanage</title>
       </Head>
       <div className="bg-gray-800 pb-32">
         <NavBar />
